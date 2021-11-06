@@ -6,6 +6,7 @@ import com.epam.training.ticketservice.ui.command.impl.BaseCommand;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.Scanner;
 import java.util.Set;

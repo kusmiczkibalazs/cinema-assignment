@@ -2,8 +2,8 @@ package com.epam.training.ticketservice.ui.command.impl;
 
 public class BaseCommand extends AbstractCommand {
 
-    public BaseCommand(String entityType, String action) {
-        super(entityType, action);
+    public BaseCommand(String action, String entityType) {
+        super(action, entityType);
     }
 
     @Override

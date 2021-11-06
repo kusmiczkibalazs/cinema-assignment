@@ -7,12 +7,12 @@ import java.util.Objects;
 
 public abstract class AbstractCommand implements Command {
 
-    private final String entityType;
     private final String action;
+    private final String entityType;
 
-    public AbstractCommand(String entityType, String action) {
-        this.entityType = entityType;
+    public AbstractCommand(String action, String entityType) {
         this.action = action;
+        this.entityType = entityType;
     }
 
     @Override
@@ -40,6 +40,6 @@ public abstract class AbstractCommand implements Command {
 
     @Override
     public int hashCode() {
-        return Objects.hash(entityType, action);
+        return Objects.hash(action, entityType);
     }
 }
