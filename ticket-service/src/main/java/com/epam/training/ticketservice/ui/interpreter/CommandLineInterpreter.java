@@ -25,6 +25,7 @@ public class CommandLineInterpreter {
 
     public void handleUserInputs() throws IOException {
         String inputLine;
+        System.out.print("Ticket service>");
         while (!"exit".equals(inputLine = scanner.nextLine())) {
             String[] commandParts = inputLine.split(" ");
             if (commandParts.length < 2) {
@@ -36,6 +37,7 @@ public class CommandLineInterpreter {
             } else {
                 outputStream.write(command.get().process(inputLine).getBytes());
                 outputStream.write(System.lineSeparator().getBytes());
+                System.out.print("Ticket service>");
             }
         }
     }
