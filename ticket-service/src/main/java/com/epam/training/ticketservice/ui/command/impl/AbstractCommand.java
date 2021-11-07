@@ -17,7 +17,7 @@ public abstract class AbstractCommand implements Command {
 
     @Override
     public String process(String commandString) {
-        String[] commandParts = commandString.split(" ");
+        String[] commandParts = commandString.split("\"?( |$)(?=(([^\"]*\"){2})*[^\"]*$)\"?");
         return process(Arrays.copyOfRange(commandParts, 2, commandParts.length));
     }
 
