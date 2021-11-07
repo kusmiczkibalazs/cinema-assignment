@@ -10,6 +10,6 @@ public class CreateScreeningCommand extends AbstractCommand {
 
     @Override
     public String process(String[] params) {
-        return "%%% Created screening: " + params[0] + ", room: " + params[1] + ", start: " + params[2];
+        return "%%% Created screening: " + params[0] + ", room: " + params[1] + ", start: " + params[2] + " " + params[3];
     }
 }

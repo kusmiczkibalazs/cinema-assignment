@@ -10,6 +10,6 @@ public class DeleteScreeningCommand extends AbstractCommand {
 
     @Override
     public String process(String[] params) {
-        return "%%% Deleted screening: " + params[0] + ", room: " + params[1] + ", start: " + params[2];
+        return "%%% Deleted screening: " + params[0] + ", room: " + params[1] + ", start: " + params[2] + " " + params[3];
     }
 }
