@@ -1,12 +1,12 @@
 package com.epam.training.ticketservice.core.room.model;
 
-public class Room {
+public class RoomDto {
 
     private final String roomName;
     private int seatRowsCount;
     private int seatColumnsCount;
 
-    public Room(String roomName, int seatRowsCount, int seatColumnsCount) {
+    public RoomDto(String roomName, int seatRowsCount, int seatColumnsCount) {
         this.roomName = roomName;
         this.seatRowsCount = seatRowsCount;
         this.seatColumnsCount = seatColumnsCount;
