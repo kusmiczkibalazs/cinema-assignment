@@ -1,4 +1,4 @@
-package com.epam.training.ticketservice.core.movie;
+package com.epam.training.ticketservice.core.movie.model;
 
 public class Movie {
 

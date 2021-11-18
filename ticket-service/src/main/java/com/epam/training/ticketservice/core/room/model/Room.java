@@ -1,4 +1,4 @@
-package com.epam.training.ticketservice.core.room;
+package com.epam.training.ticketservice.core.room.model;
 
 public class Room {
 

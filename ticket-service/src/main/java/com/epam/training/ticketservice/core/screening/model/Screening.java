@@ -1,7 +1,7 @@
-package com.epam.training.ticketservice.core.screening;
+package com.epam.training.ticketservice.core.screening.model;
 
-import com.epam.training.ticketservice.core.movie.Movie;
-import com.epam.training.ticketservice.core.room.Room;
+import com.epam.training.ticketservice.core.movie.model.Movie;
+import com.epam.training.ticketservice.core.room.model.Room;
 
 import java.util.Date;
 
