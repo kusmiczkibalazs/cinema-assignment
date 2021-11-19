@@ -28,18 +28,29 @@ public class MovieCommand {
     }
 
     @ShellMethod(key = "update movie", value = "Update a movie")
-    public String updateMovie(String title, String genre, int lengthInMinutes) {
-        //TODO
-        return "%%% Updated movie: " + title + ", genre: " + genre + ", length: " + lengthInMinutes + " minutes";
+    public void updateMovie(String title, String genre, int lengthInMinutes) {
+        MovieDto movieDto = MovieDto.builder()
+                .title(title)
+                .genre(genre)
+                .lengthInMinutes(lengthInMinutes)
+                .build();
+        movieService.updateMovie(movieDto);
+        System.out.println("Updated movie: " + title);
     }
 
     @ShellMethod(key = "delete movie", value = "Delete a movie")
     public void deleteMovie(String title) {
         movieService.deleteMovie(title);
+        System.out.println("Deleted movie: " + title);
     }
 
     @ShellMethod(key = "list movies", value = "List the movies")
-    public List<MovieDto> listMovies() {
-        return movieService.getMovieList();
+    public void listMovies() {
+        List<MovieDto> movieList = movieService.getMovieList();
+        if (movieList.isEmpty()) {
+            System.out.println("There are no movies at the moment");
+        } else {
+            movieList.forEach(System.out::println);
+        }
     }
 }

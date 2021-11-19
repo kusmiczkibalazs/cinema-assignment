@@ -42,11 +42,19 @@ public class MovieServiceImpl implements MovieService {
         movieRepository.save(movie);
     }
 
+
+    @Override
+    public void updateMovie(MovieDto movieDto) {
+        Objects.requireNonNull(movieDto, "Movie cannot be null");
+        Objects.requireNonNull(movieDto.getTitle(), "Movie title cannot be null");
+        Objects.requireNonNull(movieDto.getGenre(), "Movie genre cannot be null");
+
+        movieRepository.updateMovie(movieDto.getTitle(), movieDto.getGenre(), movieDto.getLengthInMinutes());
+    }
+
     @Override
     public void deleteMovie(String title) {
-        Objects.requireNonNull(title, "Movie title cannot be null");
-        Optional<Movie> movie = movieRepository.findByTitle(title);
-        movie.ifPresent(movieRepository::delete);
+        movieRepository.deleteByTitle(title);
     }
 
     private MovieDto convertEntityToDto(Movie movie) {
