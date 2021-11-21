@@ -29,7 +29,7 @@ public class ScreeningCommand {
     }
 
     @ShellMethod(key = "create screening", value = "Create a new screening")
-    public ScreeningDto createScreening(String title, String roomName, String screeningStartDateString) {
+    public void createScreening(String title, String roomName, String screeningStartDateString) {
         LocalDateTime screeningStartDate = LocalDateTime.parse(screeningStartDateString, formatter);
 
         Optional<MovieDto> movieDto = movieService.getMovieByTitle(title);
@@ -49,7 +49,6 @@ public class ScreeningCommand {
                         .screeningStartDate(screeningStartDate)
                         .build();
         screeningService.createScreening(screeningDto);
-        return screeningDto;
     }
 
     @ShellMethod(key = "delete screening", value = "Delete a screening")

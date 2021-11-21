@@ -41,6 +41,25 @@ public class ScreeningServiceImpl implements ScreeningService {
         Objects.requireNonNull(screeningDto.getRoomDto().getRoomName(), "Room name cannot be null");
         Objects.requireNonNull(screeningDto.getScreeningStartDate(), "Screening start date cannot be null");
 
+        List<ScreeningDto> sameRoomScreenings = getScreeningsByRoomName(screeningDto.getRoomDto().getRoomName());
+        LocalDateTime newScreeningStart = screeningDto.getScreeningStartDate();
+
+        for (var storedScreening : sameRoomScreenings) {
+            LocalDateTime storedScreeningStart = storedScreening.getScreeningStartDate();
+            int storedScreeningLength = storedScreening.getMovieDto().getLengthInMinutes();
+            int newScreeningLength = screeningDto.getMovieDto().getLengthInMinutes();
+
+            if ( newScreeningStart.isAfter(storedScreeningStart.minusMinutes(newScreeningLength + 10)) &&
+                    (newScreeningStart.isBefore(storedScreeningStart.plusMinutes(storedScreeningLength)) || newScreeningStart.isEqual(storedScreeningStart.plusMinutes(storedScreeningLength))) ) {
+                System.out.println("There is an overlapping screening");
+                return;
+            } else if ( newScreeningStart.isAfter(storedScreeningStart.plusMinutes(storedScreeningLength)) &&
+                    ( newScreeningStart.isBefore(storedScreeningStart.plusMinutes(storedScreeningLength + 10)) || newScreeningStart.isEqual(storedScreeningStart.plusMinutes(storedScreeningLength + 10)) ) ) {
+                System.out.println("This would start in the break period after another screening in this room");
+                return;
+            }
+        }
+
         Screening screening = new Screening(screeningDto.getMovieDto().getTitle(),
                 screeningDto.getRoomDto().getRoomName(),
                 screeningDto.getScreeningStartDate());
@@ -50,6 +69,10 @@ public class ScreeningServiceImpl implements ScreeningService {
     @Override
     public void deleteScreening(String title, String roomName, LocalDateTime screeningStartDate) {
         screeningRepository.deleteByTitleAndRoomNameAndScreeningStartDate(title, roomName, screeningStartDate);
+    }
+
+    private List<ScreeningDto> getScreeningsByRoomName(String roomName) {
+        return screeningRepository.findByRoomName(roomName).stream().map(this::convertEntityToDto).collect(Collectors.toList());
     }
 
     private ScreeningDto convertEntityToDto(Screening screening) {
