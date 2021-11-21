@@ -17,14 +17,13 @@ public class MovieCommand {
     }
 
     @ShellMethod(key = "create movie", value = "Create a new movie")
-    public MovieDto createMovie(String title, String genre, int lengthInMinutes) {
+    public void createMovie(String title, String genre, int lengthInMinutes) {
         MovieDto movieDto = MovieDto.builder()
                 .title(title)
                 .genre(genre)
                 .lengthInMinutes(lengthInMinutes)
                 .build();
         movieService.createMovie(movieDto);
-        return movieDto;
     }
 
     @ShellMethod(key = "update movie", value = "Update a movie")
@@ -35,13 +34,11 @@ public class MovieCommand {
                 .lengthInMinutes(lengthInMinutes)
                 .build();
         movieService.updateMovie(movieDto);
-        System.out.println("Updated movie: " + title);
     }
 
     @ShellMethod(key = "delete movie", value = "Delete a movie")
     public void deleteMovie(String title) {
         movieService.deleteMovie(title);
-        System.out.println("Deleted movie: " + title);
     }
 
     @ShellMethod(key = "list movies", value = "List the movies")

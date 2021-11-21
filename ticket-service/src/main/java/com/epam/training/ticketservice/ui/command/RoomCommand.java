@@ -17,14 +17,13 @@ public class RoomCommand {
     }
 
     @ShellMethod(key = "create room", value = "Create a new room")
-    public RoomDto createRoom(String roomName, int seatRowsCount, int seatColumnsCount) {
+    public void createRoom(String roomName, int seatRowsCount, int seatColumnsCount) {
         RoomDto roomDto = RoomDto.builder()
                 .roomName(roomName)
                 .seatRowsCount(seatRowsCount)
                 .seatColumnsCount(seatColumnsCount)
                 .build();
         roomService.createRoom(roomDto);
-        return roomDto;
     }
 
     @ShellMethod(key = "update room", value = "Update a room")
@@ -35,13 +34,11 @@ public class RoomCommand {
                 .seatColumnsCount(seatColumnsCount)
                 .build();
         roomService.updateRoom(roomDto);
-        System.out.println("Updated room: " + roomName);
     }
 
     @ShellMethod(key = "delete room", value = "Delete a room")
     public void deleteRoom(String roomName) {
         roomService.deleteRoom(roomName);
-        System.out.println("Deleted room: " + roomName);
     }
 
     @ShellMethod(key = "list rooms", value = "List the rooms")

@@ -56,7 +56,6 @@ public class ScreeningCommand {
         LocalDateTime screeningStartDate = LocalDateTime.parse(screeningStartDateString, formatter);
 
         screeningService.deleteScreening(title, roomName, screeningStartDate);
-        System.out.println("Deleted screening: " + title + ", screened in room " + roomName + ", at " + screeningStartDateString);
     }
 
     @ShellMethod(key = "list screenings", value = "List the screenings")
