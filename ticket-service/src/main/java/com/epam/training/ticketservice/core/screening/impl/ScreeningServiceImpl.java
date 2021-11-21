@@ -1,7 +1,9 @@
 package com.epam.training.ticketservice.core.screening.impl;
 
 import com.epam.training.ticketservice.core.movie.MovieService;
+import com.epam.training.ticketservice.core.movie.model.MovieDto;
 import com.epam.training.ticketservice.core.room.RoomService;
+import com.epam.training.ticketservice.core.room.model.RoomDto;
 import com.epam.training.ticketservice.core.screening.ScreeningService;
 import com.epam.training.ticketservice.core.screening.model.ScreeningDto;
 import com.epam.training.ticketservice.core.screening.persistence.entity.Screening;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -50,12 +53,17 @@ public class ScreeningServiceImpl implements ScreeningService {
     }
 
     private ScreeningDto convertEntityToDto(Screening screening) {
+        Optional<MovieDto> movieDto = movieService.getMovieByTitle(screening.getTitle());
+        Optional<RoomDto> roomDto = roomService.getRoomByRoomName(screening.getRoomName());
+
+        if (movieDto.isEmpty() || roomDto.isEmpty()) {
+            throw new NullPointerException("One or more movies and/or rooms were probably deleted");
+        }
+
         return ScreeningDto.builder()
-                .movieDto(movieService.getMovieByTitle(screening.getTitle()).get())
-                .roomDto(roomService.getRoomByRoomName(screening.getRoomName()).get())
+                .movieDto(movieDto.get())
+                .roomDto(roomDto.get())
                 .screeningStartDate(screening.getScreeningStartDate())
                 .build();
-
-        //TODO NULLCHECK
     }
 }
