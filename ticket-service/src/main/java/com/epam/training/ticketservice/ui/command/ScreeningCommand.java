@@ -6,8 +6,13 @@ import com.epam.training.ticketservice.core.room.RoomService;
 import com.epam.training.ticketservice.core.room.model.RoomDto;
 import com.epam.training.ticketservice.core.screening.ScreeningService;
 import com.epam.training.ticketservice.core.screening.model.ScreeningDto;
+import com.epam.training.ticketservice.core.user.UserService;
+import com.epam.training.ticketservice.core.user.model.UserDto;
+import com.epam.training.ticketservice.core.user.persistence.entity.User;
+import org.springframework.shell.Availability;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
+import org.springframework.shell.standard.ShellMethodAvailability;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -20,14 +25,17 @@ public class ScreeningCommand {
     private final ScreeningService screeningService;
     private final MovieService movieService;
     private final RoomService roomService;
+    private final UserService userService;
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
-    public ScreeningCommand(ScreeningService screeningService, MovieService movieService, RoomService roomService) {
+    public ScreeningCommand(ScreeningService screeningService, MovieService movieService, RoomService roomService, UserService userService) {
         this.screeningService = screeningService;
         this.movieService = movieService;
         this.roomService = roomService;
+        this.userService = userService;
     }
 
+    @ShellMethodAvailability("isAdmin")
     @ShellMethod(key = "create screening", value = "Create a new screening")
     public void createScreening(String title, String roomName, String screeningStartDateString) {
         LocalDateTime screeningStartDate = LocalDateTime.parse(screeningStartDateString, formatter);
@@ -51,6 +59,7 @@ public class ScreeningCommand {
         screeningService.createScreening(screeningDto);
     }
 
+    @ShellMethodAvailability("isAdmin")
     @ShellMethod(key = "delete screening", value = "Delete a screening")
     public void deleteScreening(String title, String roomName, String screeningStartDateString) {
         LocalDateTime screeningStartDate = LocalDateTime.parse(screeningStartDateString, formatter);
@@ -66,5 +75,13 @@ public class ScreeningCommand {
         } else {
             screeningList.forEach(System.out::println);
         }
+    }
+
+    private Availability isAdmin() {
+        Optional<UserDto> user = userService.getLoggedInUser();
+        if (user.isPresent() && user.get().getRole() == User.Role.ADMIN) {
+            return Availability.available();
+        }
+        return Availability.unavailable("You are not an admin!");
     }
 }
