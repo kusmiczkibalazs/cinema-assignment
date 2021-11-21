@@ -1,9 +1,0 @@
-package com.epam.training.ticketservice.ui.configuration;
-
-import org.springframework.context.annotation.Configuration;
-
-import java.util.Set;
-
-@Configuration
-public class ApplicationConfiguration {
-}
