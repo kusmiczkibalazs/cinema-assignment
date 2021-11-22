@@ -28,7 +28,10 @@ public class ScreeningCommand {
     private final UserService userService;
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
-    public ScreeningCommand(ScreeningService screeningService, MovieService movieService, RoomService roomService, UserService userService) {
+    public ScreeningCommand(ScreeningService screeningService,
+                            MovieService movieService,
+                            RoomService roomService,
+                            UserService userService) {
         this.screeningService = screeningService;
         this.movieService = movieService;
         this.roomService = roomService;

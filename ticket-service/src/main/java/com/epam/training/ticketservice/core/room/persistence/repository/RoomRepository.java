@@ -17,8 +17,12 @@ public interface RoomRepository extends JpaRepository<Room, Integer> {
 
     @Transactional
     @Modifying
-    @Query("UPDATE Room r SET r.seatRowsCount = :newSeatRowsCount, r.seatColumnsCount = :newSeatColumnsCount WHERE r.roomName = :roomName")
-    void updateRoom(@Param("roomName") String roomName, @Param("newSeatRowsCount") int newSeatRowsCount, @Param("newSeatColumnsCount") int newSeatColumnsCount);
+    @Query("UPDATE Room r "
+            + "SET r.seatRowsCount = :newSeatRowsCount, r.seatColumnsCount = :newSeatColumnsCount "
+            + "WHERE r.roomName = :roomName")
+    void updateRoom(@Param("roomName") String roomName,
+                    @Param("newSeatRowsCount") int newSeatRowsCount,
+                    @Param("newSeatColumnsCount") int newSeatColumnsCount);
 
     @Transactional
     void deleteByRoomName(String roomName);

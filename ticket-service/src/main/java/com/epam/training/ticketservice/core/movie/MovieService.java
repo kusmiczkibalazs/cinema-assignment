@@ -9,7 +9,7 @@ public interface MovieService {
 
     List<MovieDto> getMovieList();
 
-    Optional<MovieDto> getMovieByTitle (String title);
+    Optional<MovieDto> getMovieByTitle(String title);
 
     void createMovie(MovieDto movieDto);
 

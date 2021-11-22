@@ -9,7 +9,7 @@ public interface RoomService {
 
     List<RoomDto> getRoomList();
 
-    Optional<RoomDto> getRoomByRoomName (String roomName);
+    Optional<RoomDto> getRoomByRoomName(String roomName);
 
     void createRoom(RoomDto roomDto);
 

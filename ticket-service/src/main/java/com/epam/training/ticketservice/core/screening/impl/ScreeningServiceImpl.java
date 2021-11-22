@@ -23,7 +23,9 @@ public class ScreeningServiceImpl implements ScreeningService {
     private final MovieService movieService;
     private final RoomService roomService;
 
-    public ScreeningServiceImpl(ScreeningRepository screeningRepository, MovieService movieService, RoomService roomService) {
+    public ScreeningServiceImpl(ScreeningRepository screeningRepository,
+                                MovieService movieService,
+                                RoomService roomService) {
         this.screeningRepository = screeningRepository;
         this.movieService = movieService;
         this.roomService = roomService;
@@ -49,12 +51,14 @@ public class ScreeningServiceImpl implements ScreeningService {
             int storedScreeningLength = storedScreening.getMovieDto().getLengthInMinutes();
             int newScreeningLength = screeningDto.getMovieDto().getLengthInMinutes();
 
-            if ( newScreeningStart.isAfter(storedScreeningStart.minusMinutes(newScreeningLength + 10)) &&
-                    (newScreeningStart.isBefore(storedScreeningStart.plusMinutes(storedScreeningLength)) || newScreeningStart.isEqual(storedScreeningStart.plusMinutes(storedScreeningLength))) ) {
+            if (newScreeningStart.isAfter(storedScreeningStart.minusMinutes(newScreeningLength + 10))
+                    && (newScreeningStart.isBefore(storedScreeningStart.plusMinutes(storedScreeningLength))
+                        || newScreeningStart.isEqual(storedScreeningStart.plusMinutes(storedScreeningLength)))) {
                 System.out.println("There is an overlapping screening");
                 return;
-            } else if ( newScreeningStart.isAfter(storedScreeningStart.plusMinutes(storedScreeningLength)) &&
-                    ( newScreeningStart.isBefore(storedScreeningStart.plusMinutes(storedScreeningLength + 10)) || newScreeningStart.isEqual(storedScreeningStart.plusMinutes(storedScreeningLength + 10)) ) ) {
+            } else if (newScreeningStart.isAfter(storedScreeningStart.plusMinutes(storedScreeningLength))
+                    && (newScreeningStart.isBefore(storedScreeningStart.plusMinutes(storedScreeningLength + 10))
+                        || newScreeningStart.isEqual(storedScreeningStart.plusMinutes(storedScreeningLength + 10)))) {
                 System.out.println("This would start in the break period after another screening in this room");
                 return;
             }
@@ -72,7 +76,10 @@ public class ScreeningServiceImpl implements ScreeningService {
     }
 
     private List<ScreeningDto> getScreeningsByRoomName(String roomName) {
-        return screeningRepository.findByRoomName(roomName).stream().map(this::convertEntityToDto).collect(Collectors.toList());
+        return screeningRepository.findByRoomName(roomName)
+                .stream()
+                .map(this::convertEntityToDto)
+                .collect(Collectors.toList());
     }
 
     private ScreeningDto convertEntityToDto(Screening screening) {

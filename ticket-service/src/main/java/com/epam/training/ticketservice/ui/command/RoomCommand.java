@@ -55,7 +55,7 @@ public class RoomCommand {
     @ShellMethod(key = "list rooms", value = "List the rooms")
     public void listRooms() {
         List<RoomDto> roomList = roomService.getRoomList();
-        if(roomList.isEmpty()){
+        if (roomList.isEmpty()) {
             System.out.println("There are no rooms at the moment");
         } else {
             roomList.forEach(System.out::println);
