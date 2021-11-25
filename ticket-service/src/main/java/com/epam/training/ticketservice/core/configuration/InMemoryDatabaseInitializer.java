@@ -28,15 +28,6 @@ public class InMemoryDatabaseInitializer {
 
     @PostConstruct
     public void init() {
-        Movie interstellar = new Movie("Interstellar", "sci-fi", 169);
-        Movie theGentleMen = new Movie("The Gentlemen", "crime", 113);
-        Movie goodWillHunting = new Movie("Good Will Hunting", "drama", 126);
-        movieRepository.saveAll(List.of(interstellar, theGentleMen, goodWillHunting));
-
-        Room pedersoli = new Room("Pedersoli", 10, 10);
-        Room lumiere = new Room("Lumiere", 5,7);
-        roomRepository.saveAll(List.of(pedersoli, lumiere));
-
         User admin = new User("admin", "admin", User.Role.ADMIN);
         userRepository.save(admin);
     }
