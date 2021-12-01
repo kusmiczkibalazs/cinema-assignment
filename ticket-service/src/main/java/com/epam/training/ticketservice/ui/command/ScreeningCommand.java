@@ -48,10 +48,6 @@ public class ScreeningCommand {
         Optional<MovieDto> movieDto = movieService.getMovieByTitle(title);
         Optional<RoomDto> roomDto = roomService.getRoomByRoomName(roomName);
 
-/*        if (movieDto.isEmpty() || roomDto.isEmpty()) {
-            throw new NullPointerException("Movie or room do not exist");
-        }*/
-
         ScreeningDto screeningDto = ScreeningDto.builder()
                         .movieDto(movieDto.get())
                         .roomDto(roomDto.get())
