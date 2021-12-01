@@ -51,6 +51,7 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public void deleteRoom(String roomName) {
+        Objects.requireNonNull(roomName, "Room name cannot be null");
         roomRepository.deleteByRoomName(roomName);
     }
 

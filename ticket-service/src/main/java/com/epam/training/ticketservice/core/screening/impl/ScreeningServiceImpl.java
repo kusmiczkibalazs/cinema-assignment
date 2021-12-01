@@ -4,7 +4,9 @@ import com.epam.training.ticketservice.core.movie.MovieService;
 import com.epam.training.ticketservice.core.movie.model.MovieDto;
 import com.epam.training.ticketservice.core.room.RoomService;
 import com.epam.training.ticketservice.core.room.model.RoomDto;
+import com.epam.training.ticketservice.core.screening.exception.OccupiedRoomException;
 import com.epam.training.ticketservice.core.screening.ScreeningService;
+import com.epam.training.ticketservice.core.screening.exception.ScreeningBreakException;
 import com.epam.training.ticketservice.core.screening.model.ScreeningDto;
 import com.epam.training.ticketservice.core.screening.persistence.entity.Screening;
 import com.epam.training.ticketservice.core.screening.persistence.repository.ScreeningRepository;
@@ -39,28 +41,25 @@ public class ScreeningServiceImpl implements ScreeningService {
     @Override
     public void createScreening(ScreeningDto screeningDto) {
         Objects.requireNonNull(screeningDto, "Screening cannot be null");
-        Objects.requireNonNull(screeningDto.getMovieDto().getTitle(), "Movie title cannot be null");
-        Objects.requireNonNull(screeningDto.getRoomDto().getRoomName(), "Room name cannot be null");
         Objects.requireNonNull(screeningDto.getScreeningStartDate(), "Screening start date cannot be null");
 
         List<ScreeningDto> sameRoomScreenings = getScreeningsByRoomName(screeningDto.getRoomDto().getRoomName());
         LocalDateTime newScreeningStart = screeningDto.getScreeningStartDate();
+        int newScreeningLength = screeningDto.getMovieDto().getLengthInMinutes();
 
         for (var storedScreening : sameRoomScreenings) {
             LocalDateTime storedScreeningStart = storedScreening.getScreeningStartDate();
             int storedScreeningLength = storedScreening.getMovieDto().getLengthInMinutes();
-            int newScreeningLength = screeningDto.getMovieDto().getLengthInMinutes();
 
             if (newScreeningStart.isAfter(storedScreeningStart.minusMinutes(newScreeningLength + 10))
                     && (newScreeningStart.isBefore(storedScreeningStart.plusMinutes(storedScreeningLength))
-                        || newScreeningStart.isEqual(storedScreeningStart.plusMinutes(storedScreeningLength)))) {
-                System.out.println("There is an overlapping screening");
-                return;
+                    || newScreeningStart.isEqual(storedScreeningStart.plusMinutes(storedScreeningLength)))) {
+                throw new OccupiedRoomException("There is an overlapping screening");
             } else if (newScreeningStart.isAfter(storedScreeningStart.plusMinutes(storedScreeningLength))
-                    && (newScreeningStart.isBefore(storedScreeningStart.plusMinutes(storedScreeningLength + 10))
-                        || newScreeningStart.isEqual(storedScreeningStart.plusMinutes(storedScreeningLength + 10)))) {
-                System.out.println("This would start in the break period after another screening in this room");
-                return;
+                    && newScreeningStart.isBefore(storedScreeningStart.plusMinutes(storedScreeningLength + 10))
+                    || newScreeningStart.isEqual(storedScreeningStart.plusMinutes(storedScreeningLength + 10))) {
+                throw new ScreeningBreakException(
+                        "This would start in the break period after another screening in this room");
             }
         }
 
@@ -72,6 +71,9 @@ public class ScreeningServiceImpl implements ScreeningService {
 
     @Override
     public void deleteScreening(String title, String roomName, LocalDateTime screeningStartDate) {
+        Objects.requireNonNull(title, "Movie title cannot be null");
+        Objects.requireNonNull(roomName, "Room name cannot be null");
+        Objects.requireNonNull(screeningStartDate, "Screening start date cannot be null");
         screeningRepository.deleteByTitleAndRoomNameAndScreeningStartDate(title, roomName, screeningStartDate);
     }
 

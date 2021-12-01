@@ -20,10 +20,10 @@ public interface RoomRepository extends JpaRepository<Room, Integer> {
     @Query("UPDATE Room r "
             + "SET r.seatRowsCount = :newSeatRowsCount, r.seatColumnsCount = :newSeatColumnsCount "
             + "WHERE r.roomName = :roomName")
-    void updateRoom(@Param("roomName") String roomName,
+    Room updateRoom(@Param("roomName") String roomName,
                     @Param("newSeatRowsCount") int newSeatRowsCount,
                     @Param("newSeatColumnsCount") int newSeatColumnsCount);
 
     @Transactional
-    void deleteByRoomName(String roomName);
+    Room deleteByRoomName(String roomName);
 }

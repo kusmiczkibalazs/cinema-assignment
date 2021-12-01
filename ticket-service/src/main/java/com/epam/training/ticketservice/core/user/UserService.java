@@ -12,5 +12,5 @@ public interface UserService {
 
     Optional<UserDto> getLoggedInUser();
 
-    /*void registerUser(String username, String password);*/
+    void registerUser(String username, String password);
 }

@@ -4,7 +4,9 @@ import com.epam.training.ticketservice.core.movie.MovieService;
 import com.epam.training.ticketservice.core.movie.model.MovieDto;
 import com.epam.training.ticketservice.core.room.RoomService;
 import com.epam.training.ticketservice.core.room.model.RoomDto;
+import com.epam.training.ticketservice.core.screening.exception.OccupiedRoomException;
 import com.epam.training.ticketservice.core.screening.ScreeningService;
+import com.epam.training.ticketservice.core.screening.exception.ScreeningBreakException;
 import com.epam.training.ticketservice.core.screening.model.ScreeningDto;
 import com.epam.training.ticketservice.core.user.UserService;
 import com.epam.training.ticketservice.core.user.model.UserDto;
@@ -46,20 +48,21 @@ public class ScreeningCommand {
         Optional<MovieDto> movieDto = movieService.getMovieByTitle(title);
         Optional<RoomDto> roomDto = roomService.getRoomByRoomName(roomName);
 
-        if (movieDto.isEmpty() && roomDto.isEmpty()) {
-            throw new NullPointerException("Movie and room do not exist");
-        } else if (movieDto.isEmpty()) {
-            throw new NullPointerException("Movie does not exist");
-        } else if (roomDto.isEmpty()) {
-            throw new NullPointerException("Room does not exist");
-        }
+/*        if (movieDto.isEmpty() || roomDto.isEmpty()) {
+            throw new NullPointerException("Movie or room do not exist");
+        }*/
 
         ScreeningDto screeningDto = ScreeningDto.builder()
                         .movieDto(movieDto.get())
                         .roomDto(roomDto.get())
                         .screeningStartDate(screeningStartDate)
                         .build();
-        screeningService.createScreening(screeningDto);
+        try {
+            screeningService.createScreening(screeningDto);
+        } catch (OccupiedRoomException | ScreeningBreakException e) {
+            System.out.println(e.getMessage());
+        }
+
     }
 
     @ShellMethodAvailability("isAdmin")

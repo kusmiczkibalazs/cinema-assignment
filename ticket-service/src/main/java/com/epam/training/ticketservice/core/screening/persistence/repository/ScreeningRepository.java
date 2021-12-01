@@ -12,7 +12,8 @@ import java.util.List;
 public interface ScreeningRepository extends JpaRepository<Screening, Integer> {
 
     @Transactional
-    void deleteByTitleAndRoomNameAndScreeningStartDate(String title, String roomName, LocalDateTime screeningStartDate);
+    Screening deleteByTitleAndRoomNameAndScreeningStartDate(
+            String title, String roomName, LocalDateTime screeningStartDate);
 
     List<Screening> findByRoomName(String roomName);
 }

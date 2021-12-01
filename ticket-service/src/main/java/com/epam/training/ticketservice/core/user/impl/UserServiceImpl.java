@@ -46,6 +46,14 @@ public class UserServiceImpl implements UserService {
         return Optional.ofNullable(loggedInUser);
     }
 
+    @Override
+    public void registerUser(String username, String password) {
+        Objects.requireNonNull(username, "Username cannot be null during registration!");
+        Objects.requireNonNull(password, "Password cannot be null during registration!");
+        User user = new User(username, password, User.Role.USER);
+        userRepository.save(user);
+    }
+
     private UserDto retrieveUserInfoByNameAndPassword(String username, String password) {
         Optional<User> user = userRepository.findByUsernameAndPassword(username, password);
         if (user.isEmpty()) {

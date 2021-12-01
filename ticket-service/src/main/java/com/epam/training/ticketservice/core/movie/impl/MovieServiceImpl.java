@@ -54,6 +54,7 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public void deleteMovie(String title) {
+        Objects.requireNonNull(title, "Movie title cannot be null");
         movieRepository.deleteByTitle(title);
     }
 
