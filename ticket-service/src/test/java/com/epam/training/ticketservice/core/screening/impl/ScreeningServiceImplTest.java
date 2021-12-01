@@ -86,6 +86,28 @@ class ScreeningServiceImplTest {
     }
 
     @Test
+    void testGetScreeningListShouldThrowNullPointerExceptionWhenAMovieDtoWasDeleted() {
+        // Given
+        when(movieService.getMovieByTitle("Tenet")).thenReturn(Optional.empty());
+        when(roomService.getRoomByRoomName("Lumiere")).thenReturn(Optional.of(LUMIERE_DTO));
+        when(screeningRepository.findAll()).thenReturn(List.of(TENET_SCREENING_ENTITY));
+
+        // When - Then
+        assertThrows(NullPointerException.class, underTest::getScreeningList);
+    }
+
+    @Test
+    void testGetScreeningListShouldThrowNullPointerExceptionWhenARoomDtoWasDeleted() {
+        // Given
+        when(movieService.getMovieByTitle("Tenet")).thenReturn(Optional.of(TENET_DTO));
+        when(roomService.getRoomByRoomName("Lumiere")).thenReturn(Optional.empty());
+        when(screeningRepository.findAll()).thenReturn(List.of(TENET_SCREENING_ENTITY));
+
+        // When - Then
+        assertThrows(NullPointerException.class, underTest::getScreeningList);
+    }
+
+    @Test
     void createScreeningShouldCallScreeningRepositoryWhenTheInputScreeningIsValid() {
         // Given
         when(screeningRepository.save(TENET_SCREENING_ENTITY)).thenReturn(TENET_SCREENING_ENTITY);
@@ -127,23 +149,6 @@ class ScreeningServiceImplTest {
                 .movieDto(TENET_DTO)
                 .roomDto(PEDERSOLI_DTO)
                 .screeningStartDate(LocalDateTime.parse("2021-11-25 14:05", formatter))
-                .build();
-
-        // When - Then
-        assertThrows(OccupiedRoomException.class, () -> underTest.createScreening(screeningDto));
-    }
-
-    @Test
-    void testCreateScreeningShouldThrowOccupiedRoomExceptionWhenAScreeningStartsAfterAnother22222() {
-        // Given
-        when(screeningRepository.findByRoomName("Pedersoli")).thenReturn(List.of(INTERSTELLAR_SCREENING_ENTITY));
-        when(movieService.getMovieByTitle("Interstellar")).thenReturn(Optional.of(INTERSTELLAR_DTO));
-        when(roomService.getRoomByRoomName("Pedersoli")).thenReturn(Optional.of(PEDERSOLI_DTO));
-
-        ScreeningDto screeningDto = ScreeningDto.builder()
-                .movieDto(TENET_DTO)
-                .roomDto(PEDERSOLI_DTO)
-                .screeningStartDate(LocalDateTime.parse("2021-11-25 12:00", formatter))
                 .build();
 
         // When - Then
